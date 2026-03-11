@@ -1,5 +1,7 @@
 import numpy as np
 from sklearn.linear_model import RidgeCV
+# import pls
+from sklearn.cross_decomposition import PLSRegression
 from sklearn.model_selection import ShuffleSplit
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import explained_variance_score
@@ -10,7 +12,8 @@ class EncodingRidge:
     def __init__(self, scoring="r2", cv=5):
         self.scoring = scoring
         self.cv = cv
-        self.model = RidgeCV(scoring=scoring, cv=5, fit_intercept=False)
+        #self.model = RidgeCV(scoring=scoring, cv=5, fit_intercept=False)
+        self.model = PLSRegression(n_components=4, scale=False) # as in her paper https://www.nature.com/articles/s41562-025-02218-1#Abs1
         self.scale = StandardScaler()
 
     def fit(self, x_train, y_train, x_test, y_test):

@@ -25,4 +25,4 @@ encoding = EncodingRidge(scoring="explained_variance", cv=5)
 scores = encoding.folds(model_input, targets) # shape (cv, models, neurons)
 
 # save scores
-np.save("/data/saskia_fohs/enc_phys/encoding_scores_celeb.npy", scores)
+np.save("/data/saskia_fohs/enc_phys/encoding_scores_celeb_pls.npy", scores)
