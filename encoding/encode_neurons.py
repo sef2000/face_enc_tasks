@@ -1,5 +1,5 @@
 import numpy as np
-from encoder import EncodingRidge
+from encoder import EncodingNeurons
 
 models = ["face_vgg", "inanimate_vgg", "face_one", "inanimate_one", "dual_vgg", "dual_random"]
 targets = np.load("/data/saskia_fohs/enc_phys/Data/celeb_neurons.npy") # shape (neurons, trials)
@@ -21,7 +21,7 @@ targets[nan_target] = 0 # as in her paper https://www.nature.com/articles/s41562
 print(model_input.shape)
 print(targets.shape)
 
-encoding = EncodingRidge(scoring="explained_variance", cv=5)
+encoding = EncodingNeurons(scoring="explained_variance", cv=5, model="pls")
 scores = encoding.folds(model_input, targets) # shape (cv, models, neurons)
 
 # save scores

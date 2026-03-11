@@ -1,19 +1,21 @@
 import numpy as np
-from sklearn.linear_model import RidgeCV
 # import pls
 from sklearn.cross_decomposition import PLSRegression
+from sklearn.linear_model import RidgeCV
+from sklearn.metrics import explained_variance_score
 from sklearn.model_selection import ShuffleSplit
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import explained_variance_score
-import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-class EncodingRidge:
-    def __init__(self, scoring="r2", cv=5):
+
+class EncodingNeurons:
+    def __init__(self, scoring="r2", cv=5, model="pls"):
         self.scoring = scoring
         self.cv = cv
-        #self.model = RidgeCV(scoring=scoring, cv=5, fit_intercept=False)
-        self.model = PLSRegression(n_components=4, scale=False) # as in her paper https://www.nature.com/articles/s41562-025-02218-1#Abs1
+        if model == "ridge":
+            self.model = RidgeCV(scoring=scoring, cv=5, fit_intercept=False)
+        else:
+            self.model = PLSRegression(n_components=4, scale=False) # as in her paper https://www.nature.com/articles/s41562-025-02218-1#Abs1
         self.scale = StandardScaler()
 
     def fit(self, x_train, y_train, x_test, y_test):
@@ -62,6 +64,6 @@ if __name__ == "__main__":
     x = np.random.rand(6, 300, 7) # models, trials, features
     y = np.random.rand(300, 20) # trials, targets
 
-    encoding = EncodingRidge(scoring="explained_variance", cv=5)
+    encoding = EncodingNeurons(scoring="explained_variance", cv=5)
     scores = encoding.folds(x, y)
     print(scores.shape) # should be (cv, models, targets)
